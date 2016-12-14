@@ -1,3 +1,11 @@
-<h1>
-  {{title}}
-</h1>
+<div>
+  <h1>{{title}}</h1>
+  <div id="minefield"
+    [style.width]="width">
+    <div *ngFor="let tile of minefield; let i = index"
+      id="{{i}}"
+      class="tile"
+      (click)="handleClick($event)">{{tile}}
+  </div>
+  </div>
+</div>
