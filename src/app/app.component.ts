@@ -9,6 +9,7 @@ import reducer from './app.reducers'
 })
 export class AppComponent implements OnInit {
   private title: string
+  private difficulty: string
   private gridSize: number
   private rowLength: number
   private mines: number
@@ -18,33 +19,54 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.title = 'Brainsweeper'
     this.store.combineReducers(reducer)
+    this.store.dispatch({
+      mode: 'normal'
+    })
   }
 
   startGame(difficulty: string): void {
     this.store.dispatch({
+      unlockState: true
+    })
+    this.store.dispatch({
       type: 'START',
       difficulty: difficulty
     })
-    const state = this.store.getState()['minefield']
-    this.gridSize = state.gridSize
-    this.rowLength = state.rowLength
-    this.mines = state.mines
-    this.minefield = state.minefield
+    this.minefield = this.store.getState()['minefield']
+    this.setSettings(difficulty)
+  }
+
+  setSettings(difficulty: string): void {
+    switch (difficulty) {
+      case 'beginner': this.gridSize = 81; this.rowLength = 9; this.mines = 10; break
+      case 'intermediate': this.gridSize = 256; this.rowLength = 16; this.mines = 40; break
+      case 'advanced': this.gridSize = 480; this.rowLength = 30; this.mines = 99; break
+    }
   }
 
   handleClick(id: number): void {
     this.store.dispatch({
       type: 'CLICK',
+      KEYPATHS_TO_CHANGE: [`minefield.${id}`],
       id: id
     })
-    const state = this.store.getState()['minefield']
-    this.minefield = state.minefield
-    if (this.minefield[id]['adjacentMines'] === 0) {
+    this.minefield = this.store.getState()['minefield']
+    if (this.minefield[id]['isMine']) {
+      this.store.dispatch({
+        lockState: true
+      })
+    }
+    else if (this.minefield[id]['adjacentMines'] === 0) {
       const validAdjacents = this.getValidAdjacents(this.minefield, id, this.rowLength)
       validAdjacents.forEach(adj => {
         if (this.minefield[adj]['isRevealed'] === false) this.handleClick(adj)
       })
     }
+  }
+
+  handleRClick(event: Event, id: number): void {
+    event.preventDefault();
+    console.log('inside handle r click');
   }
 
   getValidAdjacents(minefield: number[], tileId: number, rowLength: number): number[] {

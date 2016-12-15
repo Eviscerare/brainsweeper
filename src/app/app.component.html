@@ -12,7 +12,17 @@
     <div *ngFor="let tile of minefield; let i = index"
       id="{{i}}" class="tile"
       (click)="handleClick(i)"
-      [class.clicked]="minefield[i].isRevealed">
+      contextmenu="handleRClick($event, i)"
+      [class.clicked]="minefield[i].isRevealed"
+      [class.mine]="minefield[i].isMine"
+      [class.one]="minefield[i].adjacentMines === 1"
+      [class.two]="minefield[i].adjacentMines === 2"
+      [class.three]="minefield[i].adjacentMines === 3"
+      [class.four]="minefield[i].adjacentMines === 4"
+      [class.five]="minefield[i].adjacentMines === 5"
+      [class.six]="minefield[i].adjacentMines === 6"
+      [class.seven]="minefield[i].adjacentMines === 7"
+      [class.eight]="minefield[i].adjacentMines === 8">
       {{
         minefield[i]['isRevealed'] ?
           minefield[i]['isMine'] ? 'X' :

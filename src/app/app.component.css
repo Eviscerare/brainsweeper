@@ -41,7 +41,9 @@
   box-shadow: 1px 1px 15px black;
 }
 
-.clicked { background-color: darkslategrey; }
+.clicked { background-color: whitesmoke; }
+
+.clicked.mine { background-color: #FF0000; }
 
 .clicked.one { color: #0000FF; }
 

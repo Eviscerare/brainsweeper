@@ -1,38 +1,28 @@
-const initialState = {
-  gridSize: 0,
-  rowLength: 0,
-  mines: 0,
-  minefield: [],
-}
-const minefield = (state = initialState, action) => {
-  const newState = Object.assign({}, state)
+const minefield = (state = [], action) => {
+  const field = Object.assign([], state)
   switch (action.type) {
     case 'START':
+      let gridSize, rowLength, mines
       switch (action.difficulty) {
         case 'beginner':
-          newState.gridSize = 81
-          newState.rowLength = 9
-          newState.mines = 10
-          break
+          gridSize = 81; rowLength = 9; mines = 10; break
         case 'intermediate':
-          newState.gridSize = 256
-          newState.rowLength = 16
-          newState.mines = 40
-          break
+          gridSize = 256; rowLength = 16; mines = 40; break
         case 'advanced':
-          newState.gridSize = 480
-          newState.rowLength = 30
-          newState.mines = 99
-          break
+          gridSize = 480; rowLength = 30; mines = 99; break
       }
-      newState.minefield = generateMinefield(newState.gridSize, newState.mines, newState.rowLength)
-      return newState
+      return generateMinefield(gridSize, mines, rowLength)
     case 'CLICK':
       const id = action.id
-      newState.minefield[id].isRevealed = true
-      return newState
+      if (field[id].isMine) {
+        field.forEach(tile => {
+          tile.isMine ? tile.isRevealed = true : false
+        })
+      }
+      field[id].isRevealed = true
+      return field
     default:
-      return state
+      return field
   }
 }
 
@@ -88,7 +78,7 @@ const increaseAdjacencies = (minefield: number[], mineLocations: Object, rowLeng
   Object.keys(mineLocations).forEach((mine: any) => {
     const validAdjacents = getValidAdjacents(minefield, mine, rowLength)
     validAdjacents.forEach((pos: number) => {
-      minefield[pos]['adjacentMines'] += 1
+      if (!minefield[pos]['isMine']) minefield[pos]['adjacentMines'] += 1
     })
   })
 }
