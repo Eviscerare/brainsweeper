@@ -28,6 +28,10 @@
   width: 1050px;
 }
 
+.ultimate {
+  width: 2100px;
+}
+
 .tile {
   display: flex;
   justify-content: center;
@@ -40,6 +44,12 @@
   /*color: beige;*/
   box-shadow: 1px 1px 15px black;
 }
+
+.tile::selection {
+  background-color: transparent;
+}
+
+/*.marked { background-color: #3ABAFF; }*/
 
 .clicked { background-color: whitesmoke; }
 

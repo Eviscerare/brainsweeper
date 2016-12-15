@@ -1,5 +1,6 @@
 const minefield = (state = [], action) => {
   const field = Object.assign([], state)
+  let id
   switch (action.type) {
     case 'START':
       let gridSize, rowLength, mines
@@ -10,10 +11,12 @@ const minefield = (state = [], action) => {
           gridSize = 256; rowLength = 16; mines = 40; break
         case 'advanced':
           gridSize = 480; rowLength = 30; mines = 99; break
+        case 'ultimate':
+          gridSize = 2400; rowLength = 60; mines = 150; break
       }
       return generateMinefield(gridSize, mines, rowLength)
     case 'CLICK':
-      const id = action.id
+      id = action.id
       if (field[id].isMine) {
         field.forEach(tile => {
           tile.isMine ? tile.isRevealed = true : false
@@ -21,12 +24,16 @@ const minefield = (state = [], action) => {
       }
       field[id].isRevealed = true
       return field
+    case 'MARK':
+      id = action.id
+      field[id].isMarked = field[id].isMarked ? false : true
+      return field
     default:
       return field
   }
 }
 
-const generateMinefield = (gridSize: number, mines: number, rowLength: number): number[] => {
+const generateMinefield = (gridSize: number, mines: number, rowLength: number): Object[] => {
   const minefield = []
   const mineLocations = generateMineLocations(gridSize, mines)
   for (let i = 0; i < gridSize; i++) {
@@ -56,7 +63,7 @@ const generateMineLocations = (gridSize: number, mines: number): Object => {
   return mineLocations
 }
 
-const getValidAdjacents = (minefield: number[], tileId: number, rowLength: number): number[] => {
+const getValidAdjacents = (minefield: Object[], tileId: number, rowLength: number): number[] => {
   const topLeft = +tileId - rowLength - 1
   const topMid = +tileId - rowLength
   const topRight = +tileId - rowLength + 1
@@ -65,18 +72,28 @@ const getValidAdjacents = (minefield: number[], tileId: number, rowLength: numbe
   const botLeft = +tileId + rowLength - 1
   const botMid = +tileId + rowLength
   const botRight = +tileId + rowLength + 1
-  const adjacents = [topLeft, topMid, topRight, midLeft, midRight, botLeft, botMid, botRight]
-  let validAdjacents = adjacents.filter((pos: number) => 0 <= pos && pos < minefield.length)
+  if (tileId === 0)
+    return [midRight, botMid, botRight]
+  if (tileId === rowLength - 1)
+    return [midLeft, botLeft, botMid]
+  if (tileId === minefield.length - rowLength)
+    return [topMid, topRight, midRight]
+  if (tileId === minefield.length - 1)
+    return [topLeft, topMid, midLeft]
+  if (tileId < rowLength)
+    return [midLeft, midRight, botLeft, botMid, botRight]
+  if (tileId > minefield.length - rowLength)
+    return [topLeft, topMid, topRight, midLeft, midRight]
   if (tileId % rowLength === rowLength - 1)
-    validAdjacents = validAdjacents.filter((pos: number) => pos !== topRight && pos !== midRight && pos !== botRight)
+    return [topLeft, topMid, midLeft, botLeft, botMid]
   if (tileId % rowLength === 0)
-    validAdjacents = validAdjacents.filter((pos: number) => pos !== topLeft && pos !== midLeft && pos !== botLeft)
-  return validAdjacents
+    return [topMid, topRight, midRight, botMid, botRight]
+  return [topLeft, topMid, topRight, midLeft, midRight, botLeft, botMid, botRight]
 }
 
-const increaseAdjacencies = (minefield: number[], mineLocations: Object, rowLength: number): void => {
+const increaseAdjacencies = (minefield: Object[], mineLocations: Object, rowLength: number): void => {
   Object.keys(mineLocations).forEach((mine: any) => {
-    const validAdjacents = getValidAdjacents(minefield, mine, rowLength)
+    const validAdjacents = getValidAdjacents(minefield, +mine, rowLength)
     validAdjacents.forEach((pos: number) => {
       if (!minefield[pos]['isMine']) minefield[pos]['adjacentMines'] += 1
     })
