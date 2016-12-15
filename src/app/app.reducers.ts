@@ -1,56 +1,100 @@
 const initialState = {
   gridSize: 0,
+  rowLength: 0,
   mines: 0,
-  minefield: []
+  minefield: [],
 }
-const minefield = (state = null, action) => {
-  console.log('inside minefield reducer');
-  if (!state) {
-    const mineLocations = generateMineLocations(256, 40)
-    const minefield = []
-    for (let i = 0; i < 256; i++) {
-      minefield.push(mineLocations[i] ? 1 : 0)
-    }
-    return minefield
-  }
+const minefield = (state = initialState, action) => {
+  const newState = Object.assign({}, state)
   switch (action.type) {
+    case 'START':
+      switch (action.difficulty) {
+        case 'beginner':
+          newState.gridSize = 81
+          newState.rowLength = 9
+          newState.mines = 10
+          break
+        case 'intermediate':
+          newState.gridSize = 256
+          newState.rowLength = 16
+          newState.mines = 40
+          break
+        case 'advanced':
+          newState.gridSize = 480
+          newState.rowLength = 30
+          newState.mines = 99
+          break
+      }
+      newState.minefield = generateMinefield(newState.gridSize, newState.mines, newState.rowLength)
+      return newState
     case 'CLICK':
       const id = action.id
-      console.log('clicked with', id)
+      newState.minefield[id].isRevealed = true
+      return newState
     default:
       return state
   }
 }
 
-const mainReducer = {
-  minefield,
-  // brain: () => {
-  //   switch (action.type) {
-  //     case 'START':
-  //       const newState = Object.assign({}, initialState)
-  //       newState.gridSize = 256
-  //       for (let i = 0; i < newState.gridSize; i++)
-  //         newState.minefield.push(mineLocations[i] ? 1 : 0)
-  //       return newState
-  //     default:
-  //       return state
-  //   }
-  // }
+const generateMinefield = (gridSize: number, mines: number, rowLength: number): number[] => {
+  const minefield = []
+  const mineLocations = generateMineLocations(gridSize, mines)
+  for (let i = 0; i < gridSize; i++) {
+    const tile = {
+      id: i,
+      isMine: mineLocations[i] ? true : false,
+      isRevealed: false,
+      isMarked: false,
+      adjacentMines: 0
+    }
+    minefield.push(tile)
+  }
+  increaseAdjacencies(minefield, mineLocations, rowLength)
+  return minefield
 }
 
-const generateMineLocations = (gridSize: number, mines: number): {} => {
+const generateMineLocations = (gridSize: number, mines: number): Object => {
   const mineLocations = {}
-  for (let i = 0; i < mines; i++) {
-    let exists = false
-    do {
-      const idx = Math.floor(Math.random() * gridSize)
-      if (!mineLocations[idx]) {
-        mineLocations[idx] = true
-        exists = true
-      }
-    } while (!exists)
+  let mineCount = 0
+  while (mineCount < mines) {
+    const idx = Math.floor(Math.random() * gridSize)
+    if (!mineLocations[idx]) {
+      mineLocations[idx] = true
+      mineCount++
+    }
   }
   return mineLocations
 }
 
-export default mainReducer
+const getValidAdjacents = (minefield: number[], tileId: number, rowLength: number): number[] => {
+  const topLeft = +tileId - rowLength - 1
+  const topMid = +tileId - rowLength
+  const topRight = +tileId - rowLength + 1
+  const midLeft = +tileId - 1
+  const midRight = +tileId + 1
+  const botLeft = +tileId + rowLength - 1
+  const botMid = +tileId + rowLength
+  const botRight = +tileId + rowLength + 1
+  const adjacents = [topLeft, topMid, topRight, midLeft, midRight, botLeft, botMid, botRight]
+  let validAdjacents = adjacents.filter((pos: number) => 0 <= pos && pos < minefield.length)
+  if (tileId % rowLength === rowLength - 1)
+    validAdjacents = validAdjacents.filter((pos: number) => pos !== topRight && pos !== midRight && pos !== botRight)
+  if (tileId % rowLength === 0)
+    validAdjacents = validAdjacents.filter((pos: number) => pos !== topLeft && pos !== midLeft && pos !== botLeft)
+  return validAdjacents
+}
+
+const increaseAdjacencies = (minefield: number[], mineLocations: Object, rowLength: number): void => {
+  Object.keys(mineLocations).forEach((mine: any) => {
+    const validAdjacents = getValidAdjacents(minefield, mine, rowLength)
+    validAdjacents.forEach((pos: number) => {
+      minefield[pos]['adjacentMines'] += 1
+    })
+  })
+}
+
+const reducer = {
+  minefield
+}
+
+export default reducer

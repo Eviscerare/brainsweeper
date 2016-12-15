@@ -1,11 +1,24 @@
-<div>
-  <h1>{{title}}</h1>
-  <div id="minefield"
-    [style.width]="width">
-    <div *ngFor="let tile of minefield; let i = index"
-      id="{{i}}"
-      class="tile"
-      (click)="handleClick($event)">{{tile}}
+<div id="container">
+  <div id="header">
+    <h1>{{title}}</h1>
+    <button id="beginner" (click)="startGame('beginner')">Beginner</button>
+    <button id="intermediate" (click)="startGame('intermediate')">Intermediate</button>
+    <button id="advanced" (click)="startGame('advanced')">Advanced</button>
   </div>
+  <div id="minefield"
+    [class.beginner]="gridSize === 81"
+    [class.intermediate]="gridSize === 256"
+    [class.advanced]="gridSize === 480">
+    <div *ngFor="let tile of minefield; let i = index"
+      id="{{i}}" class="tile"
+      (click)="handleClick(i)"
+      [class.clicked]="minefield[i].isRevealed">
+      {{
+        minefield[i]['isRevealed'] ?
+          minefield[i]['isMine'] ? 'X' :
+            minefield[i]['adjacentMines'] > 0 ?
+              minefield[i]['adjacentMines'] : '' : ''
+      }}
+    </div>
   </div>
 </div>

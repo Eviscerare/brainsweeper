@@ -1,4 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Electrolize;
+  background-color: #A6DBF7;
+}
+
 #root {
   display: flex;
   justify-content: center;
