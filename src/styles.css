@@ -8,6 +8,10 @@
   background-color: transparent;
 }
 
+*::-moz-selection {
+  background-color: transparent;
+}
+
 body {
   font-family: Electrolize;
   background-color: #A6DBF7;
