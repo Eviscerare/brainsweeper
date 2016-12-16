@@ -12,7 +12,7 @@ const minefield = (state = [], action) => {
         case 'advanced':
           gridSize = 480; rowLength = 30; mines = 99; break
         case 'ultimate':
-          gridSize = 2400; rowLength = 60; mines = 150; break
+          gridSize = 2100; rowLength = 70; mines = 250; break
       }
       return generateMinefield(gridSize, mines, rowLength)
     case 'CLICK':

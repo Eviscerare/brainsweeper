@@ -25,11 +25,13 @@ export class AppComponent implements OnInit {
   }
 
   startGame(difficulty: string): void {
+    console.log('starting');
     this.store.dispatch({
       unlockState: true
     })
     this.store.dispatch({
       type: 'START',
+      KEYPATHS_TO_CHANGE: [`minefield`],
       difficulty
     })
     this.minefield = this.store.getState()['minefield']
@@ -41,7 +43,7 @@ export class AppComponent implements OnInit {
       case 'beginner': this.gridSize = 81; this.rowLength = 9; this.mines = 10; break
       case 'intermediate': this.gridSize = 256; this.rowLength = 16; this.mines = 40; break
       case 'advanced': this.gridSize = 480; this.rowLength = 30; this.mines = 99; break
-      case 'ultimate': this.gridSize = 2400; this.rowLength = 60; this.mines = 150; break
+      case 'ultimate': this.gridSize = 2100; this.rowLength = 70; this.mines = 250; break
     }
   }
 
