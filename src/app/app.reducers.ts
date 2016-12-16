@@ -10,7 +10,7 @@ const minefield = (state = [], action) => {
         case 'intermediate':
           gridSize = 256; rowLength = 16; mines = 40; break
         case 'advanced':
-          gridSize = 480; rowLength = 30; mines = 99; break
+          gridSize = 480; rowLength = 30; mines = 50; break
         case 'ultimate':
           gridSize = 9801; rowLength = 99; mines = 999; break
       }

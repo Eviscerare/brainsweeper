@@ -42,8 +42,7 @@ export class AppComponent implements OnInit {
     switch (difficulty) {
       case 'beginner': this.gridSize = 81; this.rowLength = 9; this.mines = 10; break
       case 'intermediate': this.gridSize = 256; this.rowLength = 16; this.mines = 40; break
-      case 'advanced': this.gridSize = 480; this.rowLength = 30; this.mines = 99; break
-      // case 'ultimate': this.gridSize = 2100; this.rowLength = 70; this.mines = 250; break
+      case 'advanced': this.gridSize = 480; this.rowLength = 30; this.mines = 50; break
       case 'ultimate': this.gridSize = 9801; this.rowLength = 99; this.mines = 999; break
     }
   }
@@ -60,14 +59,11 @@ export class AppComponent implements OnInit {
 
     // TODO: Death array
     if (this.minefield[id]['isMine']) {
-      // this.store.dispatch({
-      //   lockState: true
-      // })
-
-      this.minefield[id]['isRevealed']
+      this.store.dispatch({
+        lockState: true
+      })
+      this.minefield = this.store.getState()['minefield']
     }
-
-
     else if (this.minefield[id]['adjacentMines'] === 0) {
       const validAdjacents = this.getValidAdjacents(this.minefield, id, this.rowLength)
       validAdjacents.forEach(adj => {
