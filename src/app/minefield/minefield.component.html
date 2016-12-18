@@ -1,0 +1,4 @@
+<button (click)="newGame()">New Game</button>
+<div id="minefield">
+  <tile *ngFor="let tile of tiles; let i = index" id="{i}" class="tile"></tile>
+</div>

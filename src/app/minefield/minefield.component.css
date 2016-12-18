@@ -1,0 +1,20 @@
+#minefield {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  width: 3465px;
+  margin: 10px;
+}
+
+.tile {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  font-size: 26px;
+  width: 35px;
+  height: 35px;
+  background-color: #87D5FF;
+  box-shadow: 1px 1px 15px black;
+}

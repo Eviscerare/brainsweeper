@@ -1,0 +1,7 @@
+{{
+  isMarked ? '🔒' :
+    isRevealed ?
+      isMine ? 'X' :
+        adjacentMines > 0 ?
+          adjacentMines : '' : ''
+}}
