@@ -4,13 +4,8 @@
   padding: 0;
 }
 
-*::selection {
-  background-color: transparent;
-}
-
-*::-moz-selection {
-  background-color: transparent;
-}
+*::selection { background-color: transparent; }
+*::-moz-selection { background-color: transparent; }
 
 body {
   font-family: Electrolize;

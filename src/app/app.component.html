@@ -1,39 +1,4 @@
 <div id="container">
-  <div id="header">
-    <h1>{{title}}</h1>
-    <button id="beginner" (click)="startGame('beginner')">Beginner</button>
-    <button id="intermediate" (click)="startGame('intermediate')">Intermediate</button>
-    <button id="advanced" (click)="startGame('advanced')">Advanced</button>
-    <button id="ultimate" (click)="startGame('ultimate')">Ultimate</button>
-  </div>
-  <div id="minefield"
-    [class.beginner]="gridSize === 81"
-    [class.intermediate]="gridSize === 256"
-    [class.advanced]="gridSize === 480"
-    [class.ultimate]="gridSize === 9801">
-    <div *ngFor="let tile of minefield; let i = index"
-      id="{{i}}" class="tile"
-      (dblclick)="handleDblClick(i)"
-      (click)="handleClick(i)"
-      (contextmenu)="handleRClick(i)"
-      [class.clicked]="minefield[i].isRevealed"
-      [class.mine]="minefield[i].isMine"
-      [class.marked]="minefield[i].isMarked"
-      [class.one]="minefield[i].adjacentMines === 1"
-      [class.two]="minefield[i].adjacentMines === 2"
-      [class.three]="minefield[i].adjacentMines === 3"
-      [class.four]="minefield[i].adjacentMines === 4"
-      [class.five]="minefield[i].adjacentMines === 5"
-      [class.six]="minefield[i].adjacentMines === 6"
-      [class.seven]="minefield[i].adjacentMines === 7"
-      [class.eight]="minefield[i].adjacentMines === 8">
-      {{
-        minefield[i]['isMarked'] ? '🔒' :
-          minefield[i]['isRevealed'] ?
-            minefield[i]['isMine'] ? 'X' :
-              minefield[i]['adjacentMines'] > 0 ?
-                minefield[i]['adjacentMines'] : '' : ''
-        }}
-    </div>
-  </div>
+  <h1>{{title}}</h1>
+  <minefield></minefield>
 </div>

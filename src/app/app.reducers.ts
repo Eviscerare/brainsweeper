@@ -5,14 +5,10 @@ const minefield = (state = [], action) => {
     case 'START':
       let gridSize, rowLength, mines
       switch (action.difficulty) {
-        case 'beginner':
-          gridSize = 81; rowLength = 9; mines = 10; break
-        case 'intermediate':
-          gridSize = 256; rowLength = 16; mines = 40; break
-        case 'advanced':
-          gridSize = 480; rowLength = 30; mines = 50; break
-        case 'ultimate':
-          gridSize = 9801; rowLength = 99; mines = 999; break
+        case 'beginner': gridSize = 81; rowLength = 9; mines = 10; break
+        case 'intermediate': gridSize = 256; rowLength = 16; mines = 40; break
+        case 'advanced': gridSize = 480; rowLength = 30; mines = 50; break
+        case 'ultimate': gridSize = 9801; rowLength = 99; mines = 999; break
       }
       return generateMinefield(gridSize, mines, rowLength)
     case 'CLICK':
