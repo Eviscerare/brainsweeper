@@ -50,11 +50,11 @@ export class AppComponent implements OnInit {
   handleClick(id: number): void {
     if (this.minefield[id]['isMarked']) return
     if (this.minefield[id]['isRevealed']) return
-    // this.store.dispatch({
-    //   type: 'CLICK',
-    //   KEYPATHS_TO_CHANGE: [`minefield.${id}`],
-    //   id
-    // })
+    this.store.dispatch({
+      type: 'CLICK',
+      KEYPATHS_TO_CHANGE: [`minefield.${id}`],
+      id
+    })
     this.minefield[id]['isRevealed'] = true
 
     // TODO: Death array
