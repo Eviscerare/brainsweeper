@@ -1,8 +1,19 @@
-<button (click)="newGame()">New Game</button>
+<div id="listeners">Listeners Triggered: {{listeners}}</div>
 <div id="minefield">
-  <tile *ngFor="let tile of tiles; let i = index"
-    class="tile" tileId="{i}"
+  <tile *ngFor="let tile of tiles; let i = index" [tile]=tile
+    class="tile"
     (click)="handleClick(i)"
     (contextmenu)="handleRClick(i)"
-    (dblclick)="handleDblClick(i)"></tile>
+    [class.clicked]="tiles[i].isRevealed"
+    [class.mine]="tiles[i].isMine"
+    [class.marked]="tiles[i].isMarked"
+    [class.one]="tiles[i].adjacentMines === 1"
+    [class.two]="tiles[i].adjacentMines === 2"
+    [class.three]="tiles[i].adjacentMines === 3"
+    [class.four]="tiles[i].adjacentMines === 4"
+    [class.five]="tiles[i].adjacentMines === 5"
+    [class.six]="tiles[i].adjacentMines === 6"
+    [class.seven]="tiles[i].adjacentMines === 7"
+    [class.eight]="tiles[i].adjacentMines === 8"
+  ></tile>
 </div>

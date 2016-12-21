@@ -7,19 +7,11 @@ import { StoreService } from '../store.service'
   styleUrls: ['./tile.component.css']
 })
 export class TileComponent implements OnInit {
-  @Input() private tileId: number
-  private isMine: boolean
-  private isRevealed: boolean
-  private isMarked: boolean
-  private adjacentMines: number
+  @Input() private tile: Object
 
   constructor(private store: StoreService) { }
+
   ngOnInit(): void {
-    const unsub = this.store.subscribe(() => {
-      const status = this.store.getState()['tiles'][this.tileId]
-      this.isRevealed = status.isRevealed
-      this.isMarked = status.isMarked
-      if (this.isRevealed) unsub()
-    }, `tiles.${this.tileId}`)
+
   }
 }

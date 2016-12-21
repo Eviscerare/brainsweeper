@@ -1,7 +1,7 @@
 {{
-  isMarked ? '🔒' :
-    isRevealed ?
-      isMine ? 'X' :
-        adjacentMines > 0 ?
-          adjacentMines : '' : ''
+  tile.isMarked ? '🔒' :
+    tile.isRevealed ?
+      tile.isMine ? '' :
+        tile.adjacentMines > 0 ?
+          tile.adjacentMines : '' : ''
 }}

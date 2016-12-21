@@ -1,3 +1,8 @@
+#listeners {
+  font-size: 40px;
+  color: red;
+}
+
 #minefield {
   display: flex;
   flex-direction: row;
@@ -18,3 +23,23 @@
   background-color: #87D5FF;
   box-shadow: 1px 1px 15px black;
 }
+
+.clicked { background-color: whitesmoke; }
+
+.clicked.one { color: #0000FF; }
+
+.clicked.two { color: #007B00; }
+
+.clicked.three { color: #FF0000; }
+
+.clicked.four { color: #00007b; }
+
+.clicked.five { color: #7B0000; }
+
+.clicked.six { color: #007B7B; }
+
+.clicked.seven { color: #000000; }
+
+.clicked.eight { color: #808080; }
+
+.clicked.mine { background-color: #FF0000; color: black; }
