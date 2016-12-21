@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core'
 import { StoreService } from './store.service'
-// import reducer from './app.reducers'
 
 @Component({
   selector: 'app-root',
@@ -9,28 +8,10 @@ import { StoreService } from './store.service'
 })
 export class AppComponent implements OnInit {
   private title: string
-  private gridSize: number
-  private rowLength: number
-  private mines: number
   constructor(private store: StoreService) { }
 
   ngOnInit(): void {
-    this.title = 'Ultimate Brainsweeper'
-    this.startGame('ultimate')
-  }
-
-  startGame(difficulty: string): void {
-    console.log(`Starting a new game on ${difficulty}`)
-    this.setSettings(difficulty)
-  }
-
-  setSettings(difficulty: string): void {
-    switch (difficulty) {
-      // case 'beginner': this.gridSize = 81; this.rowLength = 9; this.mines = 10; break
-      // case 'intermediate': this.gridSize = 256; this.rowLength = 16; this.mines = 40; break
-      // case 'expert': this.gridSize = 480; this.rowLength = 30; this.mines = 50; break
-      case 'ultimate': this.gridSize = 9801; this.rowLength = 99; this.mines = 999; break
-    }
+    this.title = 'Brainsweeper'
   }
 
   // handleClick(id: number): void {

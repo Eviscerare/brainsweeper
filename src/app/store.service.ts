@@ -10,7 +10,7 @@ export class StoreService {
   // Set to anything else to save only action objects.
   private mode: string = 'dev'
 
-  // Current state.  
+  // Current state.
   private state: Object
 
   // When set to true (triggered by presence of 'lockState' property on action object), state cannot
@@ -59,6 +59,9 @@ export class StoreService {
 
   // Takes dot notation key path and returns nested value
   getNestedValue(obj: Object, keyPath: string): any {
+  //  let path = keyPath.replace(/\./g, "']['")}']`
+  //  obj[path]
+  //  obj=> obj.key.path.nested
     return eval(`obj['${keyPath.replace(/\./g, "']['")}']`)
   }
 
@@ -199,8 +202,8 @@ export class StoreService {
       console.warn("State change operation rejected: State is locked.")
       return
     }
-    
-    if (!('KEYPATHS_TO_CHANGE' in action)) throw Error("Need KEYPATHS_TO_CHANGE property with array of all key paths that will be changed.")
+
+    if (!('KEYPATHS_TO_CHANGE' in action)) throw Error("Action object needs KEYPATHS_TO_CHANGE property with array of all key paths that will be changed.")
 
     // Updating state object.
     for (let key in this.mainReducer) this.state[key] = this.mainReducer[key](this.state[key], action)
